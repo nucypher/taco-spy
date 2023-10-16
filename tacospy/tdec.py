@@ -4,9 +4,12 @@ from hexbytes import HexBytes
 from nucypher.blockchain.eth.signers import InMemorySigner
 from nucypher.characters.lawful import Bob, Enrico
 from nucypher.policy.conditions.lingo import ConditionLingo
-from nucypher.utilities.logging import GlobalLoggerSettings
 from nucypher_core import ThresholdMessageKit
 from nucypher_core.ferveo import DkgPublicKey
+
+from nucypher.utilities.logging import GlobalLoggerSettings
+
+GlobalLoggerSettings.start_console_logging()
 
 
 def _get_conditions():
@@ -58,7 +61,6 @@ def decrypt(
 
 
 def simple_taco():
-    GlobalLoggerSettings.start_text_file_logging()
     eth_endpoint = os.environ["DEMO_L1_PROVIDER_URI"]
     polygon_endpoint = os.environ["DEMO_L2_PROVIDER_URI"]
     domain = os.environ["DEMO_DOMAIN"]
@@ -78,5 +80,5 @@ def simple_taco():
         return cleartext == message
 
     except Exception as e:
-        print(e)
+        print(f"Failed to decrypt: {e}")
         return False

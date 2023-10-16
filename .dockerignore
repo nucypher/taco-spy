@@ -1,0 +1,8 @@
+#*.yml
+Pipfile
+Pipfile.lock
+.env
+.gitignore
+scripts/
+deploy/
+
