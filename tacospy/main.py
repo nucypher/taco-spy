@@ -26,7 +26,8 @@ node_status = defaultdict(lambda: defaultdict(dict))
 
 tapir_taco_metric = Gauge('tapir_taco_metric', 'Tapir python API')
 lynx_taco_metric = Gauge('lynx_taco_metric', 'Lynx python API')
-node_up = Gauge('node_up', 'Node availability', ['domain', 'type', 'name'])
+
+node_up = Gauge('node_up', 'Node availability', ['group', 'nested_key', 'name'])
 
 
 @app.route("/status", methods=["GET"])
