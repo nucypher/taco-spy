@@ -60,15 +60,8 @@ def decrypt(
     return cleartext
 
 
-def simple_taco():
-    eth_endpoint = os.environ["DEMO_L1_PROVIDER_URI"]
-    polygon_endpoint = os.environ["DEMO_L2_PROVIDER_URI"]
-    domain = os.environ["DEMO_DOMAIN"]
-    enrico_secret = HexBytes(os.environ["DEMO_ENRICO_PRIVATE_KEY"])
-    dkg_public_key = HexBytes(os.environ["DEMO_DKG_PUBLIC_KEY"])
-
+def simple_taco(domain, eth_endpoint, polygon_endpoint, enrico_secret, dkg_public_key, message):
     try:
-
         # encrypt
         print(f"DKG Public Key: {dkg_public_key.hex()}")
         message = "hello world".encode()

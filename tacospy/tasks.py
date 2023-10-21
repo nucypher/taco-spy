@@ -1,6 +1,8 @@
 import asyncio
+import os
 
 import aiohttp
+from hexbytes import HexBytes
 
 from constants import INTERVAL
 from status import assign_node_status
@@ -24,10 +26,40 @@ async def health_check(gague, data):
         await asyncio.sleep(INTERVAL)
 
 
-async def check_tdec_health(gauge):
+async def check_lynx_tdec_health(gauge):
+    sepolia_endpoint = os.environ["GOERLI_PROVIDER_URI"]
+    polygon_endpoint = os.environ["MUMBAI_PROVIDER_URI"]
+    lynx_enrico_secret = HexBytes(os.environ["LYNX_DEMO_ENRICO_PRIVATE_KEY"])
+    lynx_dkg_public_key = HexBytes(os.environ["LYNX_DEMO_DKG_PUBLIC_KEY"])
     while True:
         print("Checking tDEC health...")
-        result = simple_taco()
+        result = simple_taco(
+            domain="lynx",
+            eth_endpoint=sepolia_endpoint,
+            polygon_endpoint=polygon_endpoint,
+            enrico_secret=lynx_enrico_secret,
+            dkg_public_key=lynx_dkg_public_key,
+            message="hello world".encode()
+        )
+        gauge.set(int(result))  # Cast boolean to int; True will become 1, False will become 0
+        await asyncio.sleep(INTERVAL)
+
+
+async def check_tapir_tdec_health(gauge):
+    sepolia_endpoint = os.environ["SEPOLIA_PROVIDER_URI"]
+    polygon_endpoint = os.environ["MUMBAI_PROVIDER_URI"]
+    tapir_enrico_secret = HexBytes(os.environ["TAPIR_DEMO_ENRICO_PRIVATE_KEY"])
+    tapir_dkg_public_key = HexBytes(os.environ["TAPIR_DEMO_DKG_PUBLIC_KEY"])
+    while True:
+        print("Checking tDEC health...")
+        result = simple_taco(
+            domain="tapir",
+            eth_endpoint=sepolia_endpoint,
+            polygon_endpoint=polygon_endpoint,
+            enrico_secret=tapir_enrico_secret,
+            dkg_public_key=tapir_dkg_public_key,
+            message="hello world".encode()
+        )
         gauge.set(int(result))  # Cast boolean to int; True will become 1, False will become 0
         await asyncio.sleep(INTERVAL)
 
