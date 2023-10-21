@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  tacospy:
+    image: nucypher/tacospy:latest
+    container_name: tacospy
+    env_file:
+      - .env
+    build:
+        context: ../
+        dockerfile: deploy/Dockerfile
+    volumes:
+      - type: bind
+        source: .
+        target: /app/deploy/
+    ports:
+      - 8000:8000
+      - 8001:8001
