@@ -60,7 +60,7 @@ def decrypt(
     return cleartext
 
 
-def simple_taco(domain, eth_endpoint, polygon_endpoint, enrico_secret, dkg_public_key, message):
+def simple_taco(domain, eth_endpoint, polygon_endpoint, enrico_secret, dkg_public_key):
     try:
         # encrypt
         print(f"DKG Public Key: {dkg_public_key.hex()}")
