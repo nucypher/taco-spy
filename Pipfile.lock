@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1a0786b095b7fdbb41ce7cd0699874f85cd030feae637c3c63a9c5c8c6c615bb"
+            "sha256": "fdaa6744b4f456fd560d01144584f14484b9430a9d458c89ce9d1ae97e220b36"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -1117,7 +1117,7 @@
         },
         "nucypher": {
             "git": "https://github.com/nucypher/nucypher.git",
-            "ref": "0e2c4cdc8719ccac142aaa94323412cba4c7066e"
+            "ref": "c0d12e14e4526f3fb3549a1176d0b2a79923c5ca"
         },
         "nucypher-core": {
             "hashes": [

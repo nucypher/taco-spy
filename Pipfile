@@ -11,7 +11,7 @@ python-slugify = "*"
 aiohttp = "*"
 prometheus-client = "*"
 hexbytes = "*"
-nucypher = { ref = "v7.0.0-rc.9", git = "https://github.com/nucypher/nucypher.git" }
+nucypher = { ref = "v7.0.0-rc.10", git = "https://github.com/nucypher/nucypher.git" }
 
 [dev-packages]
 
