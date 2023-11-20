@@ -3,6 +3,7 @@ import os
 
 import aiohttp
 from hexbytes import HexBytes
+from nucypher.blockchain.eth import domains
 
 from constants import INTERVAL
 from status import assign_node_status
@@ -34,7 +35,7 @@ async def check_lynx_tdec_health(gauge):
     while True:
         print("Checking Lynx tDEC health...")
         result = simple_taco(
-            domain="lynx",
+            domain=domains.LYNX,
             eth_endpoint=goerli_endpoint,
             polygon_endpoint=polygon_endpoint,
             enrico_secret=lynx_enrico_secret,
@@ -52,7 +53,7 @@ async def check_tapir_tdec_health(gauge):
     while True:
         print("Checking Tapir tDEC health...")
         result = simple_taco(
-            domain="tapir",
+            domain=domains.TAPIR,
             eth_endpoint=sepolia_endpoint,
             polygon_endpoint=polygon_endpoint,
             enrico_secret=tapir_enrico_secret,

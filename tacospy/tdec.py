@@ -1,7 +1,5 @@
-import os
-
-from hexbytes import HexBytes
 from nucypher.blockchain.eth.signers import InMemorySigner
+from nucypher.blockchain.eth.domains import TACoDomain
 from nucypher.characters.lawful import Bob, Enrico
 from nucypher.policy.conditions.lingo import ConditionLingo
 from nucypher_core import ThresholdMessageKit
@@ -43,7 +41,7 @@ def encrypt(
 
 
 def decrypt(
-        domain: str,
+        domain: TACoDomain,
         eth_endpoint: str,
         polygon_endpoint: str,
         threshold_message_kit: ThresholdMessageKit
@@ -60,7 +58,7 @@ def decrypt(
     return cleartext
 
 
-def simple_taco(domain, eth_endpoint, polygon_endpoint, enrico_secret, dkg_public_key):
+def simple_taco(domain: TACoDomain, eth_endpoint: str, polygon_endpoint: str, enrico_secret: bytes, dkg_public_key: bytes):
     try:
         # encrypt
         print(f"DKG Public Key: {dkg_public_key.hex()}")
