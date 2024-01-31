@@ -11,6 +11,9 @@ from tdec import simple_taco
 from utils import read_node_config
 
 
+INVENTORY_PATH = os.environ.get("TACOSPY_INVENTORY_PATH", "inventory.yml")
+
+
 async def perform_health_checks(session, group, nested_dict, gague, data):
     for nested_key, nodes in nested_dict.items():
         tasks = [fetch_and_assign_status(session, node, group, nested_key, gauge=gague, data=data) for node in nodes]
@@ -18,7 +21,7 @@ async def perform_health_checks(session, group, nested_dict, gague, data):
 
 
 async def health_check(gague, data):
-    config = read_node_config()
+    config = read_node_config(INVENTORY_PATH)
     while True:
         async with aiohttp.ClientSession() as session:
             group_tasks = [perform_health_checks(session, group, nested_dict, gague=gague, data=data) for

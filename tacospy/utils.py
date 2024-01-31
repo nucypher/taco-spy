@@ -1,4 +1,3 @@
-import os
 from dataclasses import asdict
 from typing import Dict, List
 
@@ -6,11 +5,10 @@ import yaml
 
 from models import NodeConfig, NodeStatus
 
-INVENTORY_PATH = os.environ.get("TACOSPY_INVENTORY_PATH", "inventory.yml")
 
 
-def read_node_config() -> Dict[str, Dict[str, List[NodeConfig]]]:
-    with open(INVENTORY_PATH, "r") as f:
+def read_node_config(inventory_path) -> Dict[str, Dict[str, List[NodeConfig]]]:
+    with open(inventory_path, "r") as f:
         config = yaml.safe_load(f)
     result = {
         outer_key: {
