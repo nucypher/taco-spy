@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import yaml
 
-from models import NodeConfig, NodeStatus
+from tacospy.models import NodeConfig, NodeStatus
 
 
 
@@ -11,11 +11,11 @@ def read_node_config(inventory_path) -> Dict[str, Dict[str, List[NodeConfig]]]:
     with open(inventory_path, "r") as f:
         config = yaml.safe_load(f)
     result = {
-        outer_key: {
-            inner_key: [NodeConfig(**node) for node in inner_nodes]
-            for inner_key, inner_nodes in outer_value.items()
+        domain: {
+            node_type_label: [NodeConfig(**node) for node in nodes]
+            for node_type_label, nodes in node_types.items()
         }
-        for outer_key, outer_value in config.items()
+        for domain, node_types in config.items()
     }
     return result
 
