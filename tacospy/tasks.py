@@ -1,6 +1,8 @@
 import asyncio
 import os
 
+from dotenv import load_dotenv
+from pathlib import Path
 import aiohttp
 from hexbytes import HexBytes
 from nucypher.blockchain.eth import domains
@@ -10,13 +12,15 @@ from status import assign_node_status
 from tdec import simple_taco
 from utils import read_node_config
 
+dotenv_path = Path('deploy/.env')
+load_dotenv(dotenv_path=dotenv_path)
+INVENTORY_PATH = os.environ.get("TACOSPY_INVENTORY_PATH", "deploy/inventory.yml")
+print(f"Using inventory file: {INVENTORY_PATH}")
 
-INVENTORY_PATH = os.environ.get("TACOSPY_INVENTORY_PATH", "inventory.yml")
 
-
-async def perform_health_checks(session, group, nested_dict, gague, data):
-    for nested_key, nodes in nested_dict.items():
-        tasks = [fetch_and_assign_status(session, node, group, nested_key, gauge=gague, data=data) for node in nodes]
+async def perform_health_checks(session, domain, node_type_dict, gague, data):
+    for node_type, nodes in node_type_dict.items():
+        tasks = [fetch_and_assign_status(session, node, domain, node_type, gauge=gague, data=data) for node in nodes]
         await asyncio.gather(*tasks)
 
 
@@ -24,8 +28,8 @@ async def health_check(gague, data):
     config = read_node_config(INVENTORY_PATH)
     while True:
         async with aiohttp.ClientSession() as session:
-            group_tasks = [perform_health_checks(session, group, nested_dict, gague=gague, data=data) for
-                           group, nested_dict in config.items()]
+            group_tasks = [perform_health_checks(session, domain, node_type_dict, gague=gague, data=data) for
+                           domain, node_type_dict in config.items()]
             await asyncio.gather(*group_tasks)
         await asyncio.sleep(INTERVAL)
 
@@ -78,13 +82,13 @@ async def fetch_http_status(session, url, timeout):
         return "error"
 
 
-async def fetch_and_assign_status(session, node, group, nested_key, gauge, data):
+async def fetch_and_assign_status(session, node, domain, node_type, gauge, data):
     label = f"{node.url}"
     http_status = await fetch_http_status(session, node.full_url, node.timeout)
-    data[group][nested_key][label] = assign_node_status(node, http_status)
+    data[domain][node_type][label] = assign_node_status(node, http_status)
 
     # Update Prometheus metrics
     if http_status == 200:
-        gauge.labels(group=group, nested_key=nested_key, name=label).set(1)
+        gauge.labels(group=domain, nested_key=node_type, name=label).set(1)
     else:
-        gauge.labels(group=group, nested_key=nested_key, name=label).set(0)
+        gauge.labels(group=domain, nested_key=node_type, name=label).set(0)

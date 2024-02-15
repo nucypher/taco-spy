@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import yaml
 
-from tacospy.models import NodeConfig, NodeStatus
+from models import NodeConfig, NodeStatus
 
 
 
