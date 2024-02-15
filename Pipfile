@@ -12,6 +12,7 @@ aiohttp = "*"
 prometheus-client = "*"
 hexbytes = "*"
 nucypher = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
